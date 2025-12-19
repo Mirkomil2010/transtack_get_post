@@ -1,4 +1,4 @@
-import MainLayout from "@/components/ui/layouts/main-layout";
+import MainLayout from "@/components/layouts/main-layout";
 import CreateData from "@/pages/createProductService";
 import HomePage from "@/pages/home";
 import { createBrowserRouter } from "react-router-dom";
