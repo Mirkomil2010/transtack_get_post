@@ -1,34 +1,17 @@
-import instance from "@/lib/axios";
+import { instance } from "@/lib/axios";
 
 const productService = {
-
-    getAllProducts: async (params) => {
-        return await instance.get("/products", { params });
+    getProducts: async () => {
+        return await instance.get("/products");
     },
 
-    getProductById: async (id) => {
-        return await instance.get(`/products/${id}`);
-    },
-
-
-    createProduct: async (productData) => {
-        return await instance.post("/products/", productData);
-    },
-
-    updateProduct: async (id, productData) => {
-        return await instance.put(`/products/${id}`, productData);
-    },
-
-    deleteProduct: async (id) => {
-        return await instance.delete(`/products/${id}`);
-    },
-
-    getProductsByCategory: async (categoryId) => {
-        return await instance.get(`/categories/${categoryId}/products`);
-    },
-    createProduct: async (productData) => {
-        return await instance.post("/products/", productData);
-    },
+    createProduct: async (product) => {
+        return await instance.post("/products/", product);
+    }, 
+    updateProduct: async (product) => {
+        const { data } = await instance.put(`${API_URL}/products/${product.id}`, product);
+        return data;
+    }
 };
 
 export default productService;

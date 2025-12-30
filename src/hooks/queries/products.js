@@ -1,17 +1,26 @@
-import productService from "@/services/product-service"
-import { useQuery } from "@tanstack/react-query"
+import productService from "@/services/product-service";
+import { useQuery, useMutation, useQueryClient, QueryClient } from "@tanstack/react-query";
 
-export const useProducts = () => {
-  const { data, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ["posts"],
-    queryFn: productService.getAllProducts,
-  })
+export const useProductsQuery = () => {
+  return useQuery({
+    queryKey: ["products"],
+    queryFn: productService.getProducts,
+    retry: 3,
+  });
+};
 
-  return {
-    data,
-    isLoading,
-    isError,
-    error,
-    refetch,
-  }
-}
+export const useCreateProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ title, price, description, categoryId, images }) => productService.createProduct({ title, price, description, categoryId, images: Array.isArray(images) ? images : [images] }),
+    onSuccess: () => {
+      alert("Product created successfully");
+      queryClient.invalidateQueries(["products"]);
+    },
+    onError: (error) => {
+      alert("Error creating product: " + error.message);
+    },
+  });
+};
+
