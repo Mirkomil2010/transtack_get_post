@@ -1,5 +1,6 @@
+import { instance } from "@/lib/axios";
 import productService from "@/services/product-service";
-import { useQuery, useMutation, useQueryClient, QueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, } from "@tanstack/react-query";
 
 export const useProductsQuery = () => {
   return useQuery({
@@ -24,3 +25,19 @@ export const useCreateProduct = () => {
   });
 };
 
+export const useUpdateProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (product) => productService.updateProduct(product),
+
+    onSuccess: () => {
+      alert("Product updated successfully");
+      queryClient.invalidateQueries(["products"]);
+    },
+
+    onError: (error) => {
+      alert(error.message);
+    },
+  });
+};
